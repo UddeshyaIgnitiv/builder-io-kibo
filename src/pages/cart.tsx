@@ -78,9 +78,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const response = await getCart(req as NextApiRequest, res as NextApiResponse)
   const { serverRuntimeConfig } = getConfig()
   const isMultiShipEnabled = serverRuntimeConfig.isMultiShipEnabled
-
-  const cartTopContentSection = await builder.get('cart-top-content-section').promise()
-  const cartBottomContentSection = await builder.get('cart-bottom-content-section').promise()
+  const { cartTopSection, cartBottomSection } = publicRuntimeConfig?.builderIO?.modelKeys || {}
+  const cartTopContentSection = await builder.get(cartBottomSection).promise()
+  const cartBottomContentSection = await builder.get(cartTopSection).promise()
 
   return {
     props: {
@@ -95,6 +95,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
 const CartPage: NextPage = (props: any) => {
   const { cartTopContentSection, cartBottomContentSection } = props
+  const { cartTopSection, cartBottomSection } = publicRuntimeConfig?.builderIO?.modelKeys || {}
   return (
     <>
       <Head>
@@ -104,15 +105,12 @@ const CartPage: NextPage = (props: any) => {
         {...props}
         cartTopContentSection={
           cartTopContentSection && (
-            <BuilderComponent model="cart-top-content-section" content={cartTopContentSection} />
+            <BuilderComponent model={cartTopSection} content={cartTopContentSection} />
           )
         }
         cartBottomContentSection={
           cartBottomContentSection && (
-            <BuilderComponent
-              model="cart-bottom-content-section"
-              content={cartBottomContentSection}
-            />
+            <BuilderComponent model={cartBottomSection} content={cartBottomContentSection} />
           )
         }
       />

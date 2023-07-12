@@ -1,3 +1,4 @@
+import { BuilderComponent, builder, Builder } from '@builder.io/react'
 import getConfig from 'next/config'
 import ErrorPage from 'next/error'
 import Head from 'next/head'
@@ -5,12 +6,32 @@ import { useRouter } from 'next/router'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { ProductDetailTemplate, ProductDetailSkeleton } from '@/components/page-templates'
+import { ProductRecommendations } from '@/components/product'
 import { getProduct, getCategoryTree } from '@/lib/api/operations'
 import { productGetters } from '@/lib/getters'
 import { uiHelpers } from '@/lib/helpers'
 
 import { Product } from '@/lib/gql/types'
 import type { NextPage } from 'next'
+
+const { publicRuntimeConfig } = getConfig()
+const apiKey = publicRuntimeConfig?.builderIO?.apiKey
+
+builder.init(apiKey)
+
+Builder.registerComponent(ProductRecommendations, {
+  name: 'ProductRecommendations',
+  inputs: [
+    {
+      name: 'title',
+      type: 'string',
+    },
+    {
+      name: 'productCodes',
+      type: 'KiboCommerceProduct',
+    },
+  ],
+})
 
 export async function getServerSideProps(context: any) {
   const { locale, params, req, resolvedUrl } = context
@@ -27,6 +48,11 @@ export async function getServerSideProps(context: any) {
 
   const redirectPath = routeHandle(resolvedUrl, params.productSlug, product)
   const shouldRedirect = resolvedUrl !== redirectPath ? true : false
+  const { productDetailSection } =
+    publicRuntimeConfig?.builderIO?.modelKeys?.productDetailSection || {}
+  const section = await builder
+    .get(productDetailSection, { userAttributes: { slug: productCode } })
+    .promise()
 
   return {
     redirect: shouldRedirect
@@ -38,6 +64,7 @@ export async function getServerSideProps(context: any) {
     props: {
       product,
       categoriesTree,
+      section,
       ...(await serverSideTranslations(locale as string, ['common'])),
     },
   }
@@ -74,7 +101,7 @@ const routeHandle = (url: string, productSlug: string[], product: Product) => {
 }
 
 const ProductDetailPage: NextPage = (props: any) => {
-  const { product } = props
+  const { product, section } = props
 
   const { publicRuntimeConfig } = getConfig()
   const currentUrl = publicRuntimeConfig?.currentUrl
@@ -94,7 +121,8 @@ const ProductDetailPage: NextPage = (props: any) => {
   // if (typeof window !== 'undefined') {
   //   routeHandle(router, product)
   // }
-
+  const { productDetailSection } =
+    publicRuntimeConfig?.builderIO?.modelKeys?.productDetailSection || {}
   const breadcrumbs = product ? productGetters.getBreadcrumbs(product) : []
   return (
     <>
@@ -110,7 +138,9 @@ const ProductDetailPage: NextPage = (props: any) => {
           )}`}
         />
       </Head>
-      <ProductDetailTemplate product={product} breadcrumbs={breadcrumbs} />
+      <ProductDetailTemplate product={product} breadcrumbs={breadcrumbs}>
+        <BuilderComponent model={productDetailSection} content={section} />
+      </ProductDetailTemplate>
     </>
   )
 }
