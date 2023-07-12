@@ -1,15 +1,14 @@
 import { BuilderComponent, builder, Builder } from '@builder.io/react'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import getConfig from 'next/config'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import CmsHomePageProducts from '../../cms/components/CmsHomePageProducts/CmsHomePageProducts'
 import { KiboHeroCarousel, ContentTile, SmallBanner } from '@/components/home'
-import { FullWidthLayout } from '@/components/layout'
 import { ProductRecommendations } from '@/components/product'
 import getCategoryTree from '@/lib/api/operations/get-category-tree'
 import type { CategoryTreeResponse, NextPageWithLayout } from '@/lib/types'
 
-import type { GetStaticPropsContext, GetServerSidePropsContext } from 'next'
+import type { GetStaticPropsContext } from 'next'
 
 interface HomePageProps {
   page: any
@@ -369,8 +368,9 @@ Builder.registerComponent(ContentTile, {
   ],
 })
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getStaticProps(context: GetStaticPropsContext) {
   const { locale } = context
+  const { serverRuntimeConfig } = getConfig()
   const categoriesTree: CategoryTreeResponse = await getCategoryTree()
 
   const page = await builder
@@ -387,6 +387,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       categoriesTree,
       ...(await serverSideTranslations(locale as string, ['common'])),
     },
+    revalidate: serverRuntimeConfig.revalidate,
   }
 }
 

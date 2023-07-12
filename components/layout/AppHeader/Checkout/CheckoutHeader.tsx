@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { Box, Container, Typography } from '@mui/material'
-import { useTranslation } from 'next-i18next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
 
 import { KiboLogo } from '@/components/common'
 import { useGetCurrentOrder, useGetCurrentCheckout } from '@/hooks'
@@ -45,7 +45,7 @@ const CheckoutHeader = ({ isMultiShipEnabled }: { isMultiShipEnabled: boolean })
 
         <Box>
           <Typography variant={'h2'} component="div">
-          {t('checkout', { count: numberOfItems })}
+            {t('checkout', { count: numberOfItems })}
           </Typography>
         </Box>
       </Container>
