@@ -72,9 +72,9 @@ Builder.registerComponent(KiboHeroCarousel, {
       defaultValue: [
         {
           imageUrl:
-            'https://cdn-sb.mozu.com/26507-m1/cms/files/655bb09f-e5f2-4027-8cf6-76d0363172d1',
+            'https://images.ctfassets.net/bfhnibpd75ct/40gOUCksRd1y2G01mYEMDo/0fd74d4fe4c05b3b54ad243ba76b07b3/202301_DTC_Q1evergreen_THeroOvl-D__1_.jpg',
           mobileImageUrl:
-            'https://cdn-sb.mozu.com/26507-m1/cms/files/655bb09f-e5f2-4027-8cf6-76d0363172d1',
+            'https://images.ctfassets.net/bfhnibpd75ct/40gOUCksRd1y2G01mYEMDo/0fd74d4fe4c05b3b54ad243ba76b07b3/202301_DTC_Q1evergreen_THeroOvl-D__1_.jpg',
           imageAlt: 'image Alt text',
           title: 'Check Off Your List Event',
           subtitle: 'Save up to 50%',
@@ -84,9 +84,9 @@ Builder.registerComponent(KiboHeroCarousel, {
         },
         {
           imageUrl:
-            'https://cdn-sb.mozu.com/26507-m1/cms/files/7b763015-5d76-4c3c-a5fd-6a14a476b56c',
+            'https://images.ctfassets.net/2tdscsybkbx7/3wZ8Y8u4KDPJlWk4dmTN8i/762f0c3be35022e71e16e27af68085b4/2023_01_DTC_Q1-Evergreen-Assets_PLP-Hero-Banner_Bundles_Electric-Brush_MHeroOvl-D__1_.jpg',
           mobileImageUrl:
-            'https://cdn-sb.mozu.com/26507-m1/cms/files/7b763015-5d76-4c3c-a5fd-6a14a476b56c',
+            'https://images.ctfassets.net/2tdscsybkbx7/3wZ8Y8u4KDPJlWk4dmTN8i/762f0c3be35022e71e16e27af68085b4/2023_01_DTC_Q1-Evergreen-Assets_PLP-Hero-Banner_Bundles_Electric-Brush_MHeroOvl-D__1_.jpg',
           imageAlt: 'image Alt text',
           title: 'Save upto 70%',
           subtitle: 'Check Off Your List Event',
